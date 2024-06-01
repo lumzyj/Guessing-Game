@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guessing Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f3f3f3;
+      margin: 0;
+      padding: 0;
+    }
+    #container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #333;
+    }
+    p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 200px;
+      padding: 10px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #output {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+<div id="container">
+  <h1>Guessing Game</h1>
+  <p>Guess the number between 1 and 100!</p>
+  <input type="text" id="guessInput" placeholder="Enter your guess">
+  <button onclick="checkGuess()">Submit Guess</button>
+  <p id="output"></p>
+</div>
+
+<script>
+  const randomNumber = Math.floor(Math.random() * 100) + 1;
+  let guessesRemaining = 3;
+
+  function checkGuess() {
+    const guessInput = document.getElementById('guessInput');
+    const guess = parseInt(guessInput.value);
+
+    if (isNaN(guess) || guess < 1 || guess > 100) {
+      alert("Please enter a valid number between 1 and 100.");
+      return;
+    }
+
+    const output = document.getElementById('output');
+    if (guess === randomNumber) {
+      output.textContent = `Congratulations! You guessed the correct number: ${randomNumber}`;
+      disableInputAndButton();
+    } else {
+      guessesRemaining--;
+      if (guessesRemaining === 0) {
+        output.textContent = `Sorry, you're out of guesses. The correct number was ${randomNumber}.`;
+        disableInputAndButton();
+      } else {
+        output.textContent = guess < randomNumber ? 'Too low! Guess higher.' : 'Too high! Guess lower.';
+        guessInput.value = '';
+      }
+    }
+  }
+
+  function disableInputAndButton() {
+    const guessInput = document.getElementById('guessInput');
+    const submitButton = document.querySelector('button');
+    guessInput.disabled = true;
+    submitButton.disabled = true;
+  }
+</script>
+</body>
+</html>
