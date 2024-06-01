@@ -28,7 +28,8 @@
       margin-bottom: 20px;
     }
     input[type="text"] {
-      width: 200px;
+      width: calc(100% - 140px);
+      max-width: 200px;
       padding: 10px;
       margin-right: 10px;
       border: 1px solid #ccc;
@@ -53,6 +54,31 @@
       font-size: 18px;
       color: #333;
     }
+    #resetButton {
+      background-color: #f44336;
+      margin-top: 10px;
+    }
+    #resetButton:hover {
+      background-color: #e53935;
+    }
+    @media (max-width: 600px) {
+      #container {
+        margin: 20px;
+        padding: 10px;
+      }
+      input[type="text"] {
+        width: calc(100% - 120px);
+      }
+      button {
+        padding: 10px;
+        font-size: 14px;
+      }
+      #resetButton {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -62,10 +88,11 @@
   <input type="text" id="guessInput" placeholder="Enter your guess">
   <button onclick="checkGuess()">Submit Guess</button>
   <p id="output"></p>
+  <button id="resetButton" onclick="resetGame()" style="display:none;">Play Again</button>
 </div>
 
 <script>
-  const randomNumber = Math.floor(Math.random() * 100) + 1;
+  let randomNumber = Math.floor(Math.random() * 100) + 1;
   let guessesRemaining = 3;
 
   function checkGuess() {
@@ -88,6 +115,7 @@
         disableInputAndButton();
       } else {
         output.textContent = guess < randomNumber ? 'Too low! Guess higher.' : 'Too high! Guess lower.';
+        output.textContent += ` You have ${guessesRemaining} guess(es) remaining.`;
         guessInput.value = '';
       }
     }
@@ -98,7 +126,24 @@
     const submitButton = document.querySelector('button');
     guessInput.disabled = true;
     submitButton.disabled = true;
+    document.getElementById('resetButton').style.display = 'inline-block';
+  }
+
+  function resetGame() {
+    randomNumber = Math.floor(Math.random() * 100) + 1;
+    guessesRemaining = 3;
+
+    const guessInput = document.getElementById('guessInput');
+    const submitButton = document.querySelector('button');
+    const output = document.getElementById('output');
+
+    guessInput.disabled = false;
+    submitButton.disabled = false;
+    guessInput.value = '';
+    output.textContent = '';
+    document.getElementById('resetButton').style.display = 'none';
   }
 </script>
 </body>
 </html>
+
